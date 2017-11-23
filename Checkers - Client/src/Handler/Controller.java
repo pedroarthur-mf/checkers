@@ -18,20 +18,20 @@ import View.BoardPanel;
  * ClientApp
  */
 public class Controller implements Runnable {
-	private boolean continueToPlay;
-	private boolean waitingForAction;
-	private boolean isOver;
+	private /*@spec_public@*/boolean continueToPlay;
+	private /*@spec_public@*/boolean waitingForAction;
+	private /*@spec_public@*/boolean isOver;
 	
 	//Network
-	private DataInputStream fromServer;
-	private DataOutputStream toServer;
+	private /*@spec_public@*/DataInputStream fromServer;
+	private /*@spec_public@*/DataOutputStream toServer;
 	
-	private BoardPanel boardPanel;
-	private Player player;
+	private /*@spec_public@*/BoardPanel boardPanel;
+	private /*@ spec_public @*/ Player player;
 	
 	//Data
-	private LinkedList<Square> selectedSquares;
-	private LinkedList<Square> playableSquares;
+	private /*@spec_public@*/LinkedList<Square> selectedSquares;
+	private /*@spec_public@*/LinkedList<Square> playableSquares;
 	//private LinkedList<Square> crossableSquares;
 	
 	public Controller(Player player, DataInputStream input, DataOutputStream output){

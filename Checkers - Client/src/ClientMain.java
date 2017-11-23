@@ -9,6 +9,7 @@ import View.BoardPanel;
  */
 public class ClientMain {
 	
+	//@  requires false;
 	public static void main(String[] args) {
 		ClientApp client = new ClientApp();
 		client.setTitle("Checkers");

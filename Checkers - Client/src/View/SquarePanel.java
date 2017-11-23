@@ -26,11 +26,11 @@ public class SquarePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Square square;
-	private Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
+	private /*@spec_public@*/Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
 	//private Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
-	private Border thickBorder = BorderFactory.createLineBorder(Colors.PURPLE.getColor(),5);
-	private boolean focused;
-	private MouseHandler handler;
+	private /*@spec_public@*/Border thickBorder = BorderFactory.createLineBorder(Colors.PURPLE.getColor(),5);
+	private /*@spec_public@*/boolean focused;
+	private /*@spec_public@*/MouseHandler handler;
 	
 	//Constructor
 	public SquarePanel(Square s){

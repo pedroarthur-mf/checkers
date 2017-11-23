@@ -10,9 +10,9 @@ import EnumConstants.SessionVariable;
  */
 public class Player {
 	
-	private String name;
-	private int playerID;
-	private boolean myTurn;
+	private /*@ spec_public @*/ String name;
+	private /*@ spec_public @*/ int playerID;
+	private /*@ spec_public @*/ boolean myTurn;
 	
 	
 	public Player(String name){
