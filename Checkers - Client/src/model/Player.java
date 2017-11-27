@@ -1,0 +1,51 @@
+package model;
+
+import enumConstants.SessionVariable;
+
+/**
+ * Client Application -> Player
+ * @author  Siyar
+ * 
+ * Board Model
+ */
+public class Player {
+	
+	private /*@ spec_public nullable@*/ String name;
+	private /*@ spec_public nullable@*/ int playerID;
+	private /*@ spec_public nullable@*/ boolean myTurn;
+	
+	 
+	public Player(String name){
+		this.name = name;
+		
+		setMyTurn(false);
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public int getPlayerID() {
+		return playerID;
+	}
+
+
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
+		SessionVariable.myID.setValue(playerID);
+	}
+
+
+	public boolean isMyTurn() {
+		return myTurn;
+	}
+
+
+	public void setMyTurn(boolean myTurn) {
+		this.myTurn = myTurn;
+	}
+	
+
+	
+	
+}
