@@ -18,20 +18,20 @@ import view.BoardPanel;
  * ClientApp
  */
 public class Controller implements Runnable {
-	private /*@spec_public nullable@*/ boolean continueToPlay;
-	private /*@spec_public nullable@*/ boolean waitingForAction;
-	private /*@spec_public nullable@*/ boolean isOver;
+	private /*@ spec_public nullable @*/ boolean continueToPlay;
+	private /*@ spec_public nullable @*/ boolean waitingForAction;
+	private /*@ spec_public nullable @*/ boolean isOver;
 	
 	//Network
-	private /*@spec_public nullable@*/ DataInputStream fromServer;
-	private /*@spec_public nullable@*/ DataOutputStream toServer;
+	private /*@ spec_public nullable @*/ DataInputStream fromServer;
+	private /*@ spec_public nullable @*/ DataOutputStream toServer;
 	
-	private /*@spec_public nullable@*/ BoardPanel boardPanel;
-	private /*@spec_public nullable@*/ Player player;
+	private /*@ spec_public nullable @*/ BoardPanel boardPanel;
+	private /*@ spec_public nullable @*/ Player player;
 	
 	//Data
-	private /*@spec_public nullable@*/ LinkedList<Square> selectedSquares;
-	private /*@spec_public nullable@*/ LinkedList<Square> playableSquares;
+	private /*@ spec_public nullable @*/ LinkedList<Square> selectedSquares;
+	private /*@ spec_public nullable @*/ LinkedList<Square> playableSquares;
 	//private LinkedList<Square> crossableSquares;
 	
 	public Controller(model.Player player, DataInputStream input, DataOutputStream output){
@@ -43,6 +43,7 @@ public class Controller implements Runnable {
 		playableSquares = new LinkedList<Square>();
 	}
 	
+	//@ ensures this.boardPanel == panel;
 	public void setBoardPanel(BoardPanel panel){
 		this.boardPanel = panel;
 	}
@@ -136,6 +137,9 @@ public class Controller implements Runnable {
 	}
 	
 	//When a square is selected
+	/*@ requires selectedSquares != null; 
+	  @ requires s != null;
+	 */
 	public void squareSelected(Square s) {
 		
 		if(selectedSquares.isEmpty()){
@@ -152,6 +156,9 @@ public class Controller implements Runnable {
 		}
 	}
 	
+	/*@ requires s != null;
+	  @ ensures \old(selectedSquares.size()) < selectedSquares.size();
+	 */
 	private void addToSelected(Square s){
 		s.setSelected(true);
 		selectedSquares.add(s);

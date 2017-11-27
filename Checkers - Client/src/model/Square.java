@@ -11,14 +11,14 @@ import enumConstants.SessionVariable;
  */
 public class Square {
 	
-	private /*@spec_public nullable@*/ int SquareID;
-	private /*@spec_public nullable@*/ int SquareRow;
-	private /*@spec_public nullable@*/ int SquareCol;	
-	private /*@spec_public nullable@*/ boolean isKing;
-	private /*@spec_public nullable@*/ boolean filled;
-	private /*@spec_public nullable@*/ boolean selected;
-	private /*@spec_public nullable@*/ boolean isPossibleToMove;
-	private /*@spec_public nullable@*/ int playerID;	
+	private /*@ spec_public nullable @*/ int SquareID;
+	private /*@ spec_public nullable @*/ int SquareRow;
+	private /*@ spec_public nullable @*/ int SquareCol;	
+	private /*@ spec_public nullable @*/ boolean isKing;
+	private /*@ spec_public nullable @*/ boolean filled;
+	private /*@ spec_public nullable @*/ boolean selected;
+	private /*@ spec_public nullable @*/ boolean isPossibleToMove;
+	private /*@ spec_public nullable @*/ int playerID;	
 	
 	//Constructor
 	public Square(int SquareID, int SquareRow, int SquareCol, boolean isFilled){
@@ -39,11 +39,13 @@ public class Square {
 	public boolean getIsFilled() {
 		return filled;
 	}
-
+	
+	//@ ensures this.filled == filled;
 	private void setFilled(boolean filled) {
 		this.filled = filled;
 	}
 	
+	//@ ensures this.playerID == ID;
 	public void setPlayerID(int ID){
 		this.playerID=ID;
 	}
@@ -67,7 +69,8 @@ public class Square {
 	public boolean isSelected() {
 		return selected;
 	}
-
+	
+	//@ ensures this.selected == selected;
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
@@ -75,7 +78,8 @@ public class Square {
 	public boolean isPossibleToMove() {
 		return isPossibleToMove;
 	}
-
+	
+	//@ ensures this.isPossibleToMove == isPossibleToMove;
 	public void setPossibleToMove(boolean isPossibleToMove) {
 		this.isPossibleToMove = isPossibleToMove;
 	}
@@ -90,11 +94,17 @@ public class Square {
 	public boolean isKing() {
 		return isKing;
 	}
-
+	
+	/*@ requires this.isKing == false;
+	  @ ensures this.isKing == true;
+	  @*/
 	public void setKing() {
 		this.isKing = true;
 	}
 	
+	/*@ requires this.isKing == true;
+	  @ ensures this.isKing == false;
+	  @*/
 	public void removeKing(){
 		this.isKing = false;
 	}

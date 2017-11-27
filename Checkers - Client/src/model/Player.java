@@ -10,18 +10,21 @@ import enumConstants.SessionVariable;
  */
 public class Player {
 	
-	private /*@ spec_public nullable@*/ String name;
-	private /*@ spec_public nullable@*/ int playerID;
-	private /*@ spec_public nullable@*/ boolean myTurn;
+	private /*@ spec_public @*/ String name;
+	private /*@ spec_public @*/ int playerID;
+	private /*@ spec_public @*/ boolean myTurn;
 	
-	 
+	//@ public invariant this.name != null;
+	
+	//@ requires name != null;
 	public Player(String name){
 		this.name = name;
 		
 		setMyTurn(false);
 	}
 	
-	public String getName(){
+	//@ requires this.name != null;
+	public /*@ pure @*/String getName(){
 		return this.name;
 	}
 	
@@ -29,18 +32,17 @@ public class Player {
 		return playerID;
 	}
 
-
+	//@ ensures this.playerID == playerID;
 	public void setPlayerID(int playerID) {
 		this.playerID = playerID;
 		SessionVariable.myID.setValue(playerID);
 	}
 
-
 	public boolean isMyTurn() {
 		return myTurn;
 	}
 
-
+	//@ ensures this.myTurn == myTurn;
 	public void setMyTurn(boolean myTurn) {
 		this.myTurn = myTurn;
 	}

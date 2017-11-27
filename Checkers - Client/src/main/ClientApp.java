@@ -23,8 +23,8 @@ public class ClientApp extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private /*@ spec_public nullable @*/ String address;
-	private /*@ spec_public nullable @*/ int port;
+	private /*@ spec_public @*/ String address;
+	private /*@ spec_public @*/ int port;
 
 	// Model
 	private /*@ spec_public nullable @*/ Player player;
@@ -36,11 +36,11 @@ public class ClientApp extends JFrame {
 	private /*@ spec_public nullable @*/ Socket connection;
 	private /*@ spec_public nullable @*/ DataInputStream fromServer;
 	private /*@ spec_public nullable @*/ DataOutputStream toServer;
+	
+	//@ public invariant this.player.getName() != null && 0 < this.player.getName().length();
 
 	// Constructor
-	//@ requires true;
 	public ClientApp() {
-
 		try {
 			PropertyManager pm = PropertyManager.getInstance();
 			address = pm.getAddress();
