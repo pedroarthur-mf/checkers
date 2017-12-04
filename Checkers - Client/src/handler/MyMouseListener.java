@@ -12,8 +12,8 @@ import view.SquarePanel;
 
 public class MyMouseListener extends MouseAdapter{
 	
-	private SquarePanel squarePanel;
-	private Controller controller;
+	private /*@ nullable @*/ SquarePanel squarePanel;
+	private /*@ nullable @*/ Controller controller;
 	
 	public void setController(Controller c){
 		this.controller = c;

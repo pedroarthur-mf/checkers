@@ -1,4 +1,6 @@
 package main;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,17 +10,17 @@ import java.util.Properties;
 
 public class PropertyManager {
 
-	private /*@spec_public nullable@*/ static PropertyManager INSTANCE = null;
-	private /*@spec_public nullable@*/ Properties prop;
+	private static /*@ spec_public nullable @*/ PropertyManager INSTANCE = null;
+	private /*@ spec_public nullable @*/ Properties prop;
 	
 	private PropertyManager() throws IOException{
 		prop = new Properties();
 		String dir = System.getProperty("user.dir") + "/resources/config.properties";
-		//		InputStream is = getClass().getClassLoader().getResourceAsStream(System.getProperty("user.dir") + "/resources/config.properties");
+//		InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties");
 		
 		File file = new File(dir);
 	    InputStream is = new FileInputStream(file);
-	    
+		
 		if(is != null){
 			prop.load(is);
 		}else{
@@ -31,10 +33,6 @@ public class PropertyManager {
 			INSTANCE = new PropertyManager();
 		}
 		return INSTANCE;
-	}
-	
-	public String getAddress(){
-		return prop.getProperty("server");
 	}
 	
 	public int getPort(){

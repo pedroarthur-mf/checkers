@@ -38,6 +38,7 @@ public class Player {
 		SessionVariable.myID.setValue(playerID);
 	}
 
+	//@ ensures \result == this.myTurn;
 	public boolean isMyTurn() {
 		return myTurn;
 	}
