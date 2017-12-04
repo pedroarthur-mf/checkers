@@ -11,10 +11,10 @@ import java.net.Socket;
  * Player Model
  */
 public class Player{
-	private /*@spec_public nullable@*/ int PlayerID;
-	private /*@spec_public nullable@*/ Socket socket;
-	private /*@spec_public nullable@*/ DataInputStream fromPlayer;
-	private /*@spec_public nullable@*/ DataOutputStream toPlayer;
+	private /*@ spec_public nullable @*/ int PlayerID;
+	private /*@ spec_public nullable @*/ Socket socket;
+	private /*@ spec_public nullable @*/ DataInputStream fromPlayer;
+	private /*@ spec_public nullable @*/ DataOutputStream toPlayer;
 	
 	public Player(int ID, Socket s){
 		this.PlayerID = ID;

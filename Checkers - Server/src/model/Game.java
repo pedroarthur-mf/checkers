@@ -8,7 +8,7 @@ import enumConstants.*;
  * Game Model
  */
 public class Game {
-	private /*@spec_public nullable@*/ Square[][] squares;
+	private /*@ spec_public nullable @*/ Square[][] squares;
 	
 	//Constructor
 	public Game(){

@@ -18,7 +18,7 @@ public enum Colors {
 	
 	
 	//properties
-	private Color color;
+	private /*@ spec_public nullable @*/ Color color;
 	
 	//Constructor
 	Colors(Color color){

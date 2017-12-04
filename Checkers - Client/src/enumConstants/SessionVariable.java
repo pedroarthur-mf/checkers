@@ -5,7 +5,7 @@ public enum SessionVariable{
 	myID(3);
 	//public static MyMouseListener mouseListener = new MyMouseListener();
 	
-	private int value;
+	private /*@ spec_public nullable @*/ int value;
 	
 	SessionVariable(int value){
 		this.setValue(value);

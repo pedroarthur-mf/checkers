@@ -36,7 +36,7 @@ public class Square {
 		this.isPossibleToMove = false;
 	}
 
-	public boolean getIsFilled() {
+	public /*@ pure @*/ boolean getIsFilled() {
 		return filled;
 	}
 	
@@ -50,7 +50,7 @@ public class Square {
 		this.playerID=ID;
 	}
 	
-	public int getPlayerID(){
+	public /*@ pure @*/ int getPlayerID(){
 		return this.playerID;
 	}
 	
@@ -58,11 +58,11 @@ public class Square {
 		return this.SquareID;
 	}
 	
-	public int getSquareRow(){
+	public /*@ pure @*/ int getSquareRow(){
 		return this.SquareRow;
 	}
 	
-	public int getSquareCol(){
+	public /*@ pure @*/ int getSquareCol(){
 		return this.SquareCol;
 	}
 
@@ -75,7 +75,7 @@ public class Square {
 		this.selected = selected;
 	}
 
-	public boolean isPossibleToMove() {
+	public /*@ pure @*/ boolean isPossibleToMove() {
 		return isPossibleToMove;
 	}
 	

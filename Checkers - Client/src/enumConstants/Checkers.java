@@ -20,13 +20,15 @@ public enum Checkers {
 	YOU_LOSE(91),
 	DOUBLE_JUMP(92);
 	
-	private int value;
+	private /*@ spec_public @*/ int value;
 	
+	//@ ensures this.value == value;
 	private Checkers(int value) {
 		this.value = value;
 	}
 	
-	public int getValue(){
+	//@ ensures \result == this.value;
+	public /*@ pure @*/ int getValue(){
 		return this.value;
 	}	
 }

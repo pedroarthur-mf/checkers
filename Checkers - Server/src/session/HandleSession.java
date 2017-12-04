@@ -18,9 +18,9 @@ import java.awt.*;
  */
 public class HandleSession implements Runnable {
 	
-	private Game checkers;
-	private Player player1;
-	private Player player2;
+	private /*@ spec_public nullable @*/ Game checkers;
+	private /*@ spec_public nullable @*/ Player player1;
+	private /*@ spec_public nullable @*/ Player player2;
 	
 	private boolean continueToPlay = true;
 	

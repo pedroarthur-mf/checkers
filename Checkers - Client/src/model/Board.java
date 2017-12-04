@@ -11,7 +11,7 @@ import enumConstants.Checkers;
  */
 public class Board {
 	
-	private /*@spec_public nullable@*/Square[][] squares;
+	private /*@ spec_public nullable @*/ Square[][] squares;
 	
 	public Board(){
 		squares = new Square[8][8];
@@ -21,6 +21,20 @@ public class Board {
 		//printSquareDetails();
 	}
 	
+	/*@
+	 @ public invariant this.squares.length == 8;
+	 @ public invariant this.squares[1].length == 8;
+	 @*/
+	
+	 /*@
+	 @ ensures (\forall int i, j;
+	 @ 			0 <= i && i < squares.length && 0 <= j && j < squares.length && ((i%2 == 0 && j%2 == 1)||(i%2 == 1 && j%2 == 0));
+	 @ 			squares[i][j].getIsFilled() == true);
+	 @
+	 @ ensures (\forall int i, j;
+	 @ 			0 <= i && i < squares.length && 0 <= j && j < squares.length && ((i%2 == 0 && j%2 == 0)||(i%2 == 1 && j%2 == 1));
+	 @ 			squares[i][j].getIsFilled() == false);
+	 @*/
 	private void setSquares() {
 		boolean rowInitialFilled, isFilled;
 		int count = 0;
@@ -39,11 +53,13 @@ public class Board {
 			}
 		}		
 	}
-
+	
+	//@ ensures \result == this.squares;
 	public Square[][] getSquares(){
 		return this.squares;
 	}
 	
+	//@ ensures \result == this.squares.length;
 	public int getTotlaSquares(){
 		return squares.length;
 	}
@@ -58,6 +74,19 @@ public class Board {
 		}
 	}
 	
+	/*@
+	 @ requires (\forall int i, j;
+	 @			0 <= i && i < squares.length && 0 <= j && j < squares.length;
+	 @ 			squares[i][j].getPlayerID() == 0);//talvez n funcione
+	 @ 
+	 @ ensures (\forall int i, j;
+	 @ 			0 <= i && i < 3 && 0 <= j && j < squares.length;
+	 @ 			squares[i][j].getPlayerID() == Checkers.PLAYER_ONE.getValue());
+	 @
+	 @ ensures (\forall int i, j;
+	 @ 			squares.length-3 <= i && i < squares.length && 0 <= j && j < squares.length;
+	 @ 			squares[i][j].getPlayerID() == Checkers.PLAYER_TWO.getValue());
+	 @*/
 	private void assignPlayerIDs() {
 		
 		//Rows 0-2 for player ONE
@@ -81,6 +110,14 @@ public class Board {
 		}
 	}
 	
+	/*@
+	 @ requires selectedSquare.getPlayerID() == 1 || selectedSquare.getPlayerID() == 2;
+	 @ requires selectedSquare != null;
+	 @ requires selectedSquare.getSquareRow() >= 0 && selectedSquare.getSquareRow() < squares.length;
+	 @ ensures \result.size() >= 0 && \result.size() <= 2;
+	 @ ensures (\forall int i; i >= 0 && i < \result.size(); \result.get(i) instanceof Square);
+	 @ ensures (\forall int i; i >= 0 && i < \result.size(); \result.get(i).getPossibleToMove());
+	 @*/
 	public LinkedList<Square> findPlayableSquares(Square selectedSquare){
 		
 		LinkedList<Square> playableSquares = new LinkedList<Square>();
@@ -102,6 +139,13 @@ public class Board {
 	}
 	
 	//check two front squares
+	/*@
+	 @ requires movableRow >=0 && movableRow < squares.length;
+	 @ requires selectedCol >=0 && selectedCol < squares.length;
+	 @ ensures pack.size() >= 0 && pack.size() <= 2;
+	 @ ensures (\forall int i; i >= 0 && i < pack.size(); pack.get(i) instanceof Square);
+	 @ ensures (\forall int i; i >= 0 && i < pack.size(); pack.get(i).getPossibleToMove());
+	 @*/
 	private void twoFrontSquares(LinkedList<Square> pack, int movableRow, int selectedCol){
 		
 		if(movableRow>=0 && movableRow<8){
@@ -126,6 +170,14 @@ public class Board {
 	}
 	
 	//cross jump - two front
+	/*@
+	 @ requires movableRow >= 1&& movableRow < squares.length-1;
+	 @ requires selectedCol >=0 && selectedCol < squares.length;
+	 @ requires middleRow >=0 && middleRow < squares.length;
+	 @ ensures pack.size() >= 0 && pack.size() <= 2;
+	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); pack.get(i) instanceof Square);
+	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); pack.get(i).getPossibleToMove());
+	 @*/
 	private void crossJumpFront(LinkedList<Square> pack, int movableRow, int selectedCol, int middleRow){
 		
 		int middleCol;
@@ -153,6 +205,10 @@ public class Board {
 		}
 	}
 	
+	/*@
+	 @ requires row != 0 && col != 0;
+	 @ ensures \result == true || \result == false;
+	 @*/
 	private boolean isOpponentInbetween(int row, int col){
 		return squares[row][col].isOpponentSquare();
 	}

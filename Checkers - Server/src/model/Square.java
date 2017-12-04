@@ -10,11 +10,11 @@ import enumConstants.Checkers;
  */
 public class Square {
 	
-	private /*@spec_public nullable@*/ int SquareID;
-	private /*@spec_public nullable@*/ int SquareRow;
-	private /*@spec_public nullable@*/ int SquareCol;	
-	private /*@spec_public nullable@*/ boolean filled;
-	private /*@spec_public nullable@*/ int playerID;
+	private /*@ spec_public nullable @*/ int SquareID;
+	private /*@ spec_public nullable @*/ int SquareRow;
+	private /*@ spec_public nullable @*/ int SquareCol;	
+	private /*@ spec_public nullable @*/ boolean filled;
+	private /*@ spec_public nullable @*/ int playerID;
 	
 	
 	//Constructor

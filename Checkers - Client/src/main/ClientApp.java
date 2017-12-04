@@ -1,16 +1,17 @@
 package main;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import handler.Controller;
 import handler.MyMouseListener;
 import model.Player;
 import view.BoardPanel;
-
-import java.io.*;
-import java.net.*;
-import java.util.Random;
 
 /**
  * Client Application -> ClientApp
