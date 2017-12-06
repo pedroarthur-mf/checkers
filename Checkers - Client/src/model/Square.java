@@ -11,11 +11,11 @@ import enumConstants.SessionVariable;
  */
 public class Square {
 	
-	private /*@ spec_public nullable @*/ int SquareID;
-	private /*@ spec_public nullable @*/ int SquareRow;
-	private /*@ spec_public nullable @*/ int SquareCol;	
+	private /*@ spec_public @*/ int SquareID;
+	private /*@ spec_public @*/ int SquareRow;
+	private /*@ spec_public @*/ int SquareCol;	
 	private /*@ spec_public nullable @*/ boolean isKing;
-	private /*@ spec_public nullable @*/ boolean filled;
+	private /*@ spec_public @*/ boolean filled;
 	private /*@ spec_public nullable @*/ boolean selected;
 	private /*@ spec_public nullable @*/ boolean isPossibleToMove;
 	private /*@ spec_public nullable @*/ int playerID;	
@@ -35,55 +35,70 @@ public class Square {
 		this.selected = false;
 		this.isPossibleToMove = false;
 	}
-
+	
+	//@ ensures \result == this.filled;
 	public /*@ pure @*/ boolean getIsFilled() {
 		return filled;
 	}
 	
-	//@ ensures this.filled == filled;
+	/*@ assignable this.filled;
+	  @ ensures this.filled == filled;
+	  @*/
 	private void setFilled(boolean filled) {
 		this.filled = filled;
 	}
 	
-	//@ ensures this.playerID == ID;
+	/*@ assignable this.playerID; 
+	  @ ensures this.playerID == ID;
+	  @*/
 	public void setPlayerID(int ID){
 		this.playerID=ID;
 	}
 	
+	//@ ensures \result == this.playerID;
 	public /*@ pure @*/ int getPlayerID(){
 		return this.playerID;
 	}
 	
+	//@ ensures \result == this.SquareID;
 	public int getSquareID(){
 		return this.SquareID;
 	}
 	
+	//@ ensures \result == this.SquareRow;
 	public /*@ pure @*/ int getSquareRow(){
 		return this.SquareRow;
 	}
 	
+	//@ ensures \result == this.SquareCol;
 	public /*@ pure @*/ int getSquareCol(){
 		return this.SquareCol;
 	}
-
-	public boolean isSelected() {
+	
+	//@ ensures \result == this.selected;
+	public /*@ pure @*/ boolean isSelected() {
 		return selected;
 	}
 	
-	//@ ensures this.selected == selected;
+	/*@ assignable this.selected; 
+	  @ ensures this.selected == selected;
+	  @*/
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-
+	
+	//@ ensures \result == this.isPossibleToMove;
 	public /*@ pure @*/ boolean isPossibleToMove() {
 		return isPossibleToMove;
 	}
 	
-	//@ ensures this.isPossibleToMove == isPossibleToMove;
+	/*@ assignable this.isPossibleToMove; 
+	  @ ensures this.isPossibleToMove == isPossibleToMove;
+	  @*/
 	public void setPossibleToMove(boolean isPossibleToMove) {
 		this.isPossibleToMove = isPossibleToMove;
 	}
-	
+	//@ ensures \result == true || \result == false;
 	public boolean isOpponentSquare(){
 		if(playerID!=SessionVariable.myID.getValue() && playerID!=Checkers.EMPTY_SQUARE.getValue())
 			return true;
@@ -91,18 +106,21 @@ public class Square {
 			return false;
 	}
 
+	//@ ensures \result == this.isKing;
 	public boolean isKing() {
 		return isKing;
 	}
 	
 	/*@ requires this.isKing == false;
+	  @ assignable this.isKing;
 	  @ ensures this.isKing == true;
 	  @*/
 	public void setKing() {
 		this.isKing = true;
 	}
 	
-	/*@ ensures this.isKing == false;
+	/*@ assignable this.isKing;
+	  @ ensures this.isKing == false;
 	  @*/
 	public void removeKing(){
 		this.isKing = false;

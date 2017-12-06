@@ -32,15 +32,17 @@ public class MyMouseListener extends MouseAdapter{
 					"Error", JOptionPane.ERROR_MESSAGE, null);
 			}
 		}catch(Exception ex){
-			System.out.println("Error");
+			System.out.println("mousePressed: Error");
+			ex.printStackTrace();
 		}	
 		
 		
 	}
 	
+	//@ assignable squarePanel;
 	private void ToggleSelectPiece(MouseEvent e){
 		System.out.println("ToggleSelectPiece");
-		try{
+//		try{
 			squarePanel = (SquarePanel) e.getSource();
 			Square s = squarePanel.getSquare();
 			
@@ -56,8 +58,8 @@ public class MyMouseListener extends MouseAdapter{
 				System.out.println("select - "+s.getSquareID());
 				controller.squareSelected(s);
 			}
-		}catch(Exception ex){
-			System.out.println("ToggleSelectPiece: error");
-		}
+//		}catch(Exception ex){
+//			System.out.println("ToggleSelectPiece: error");
+//		}
 	}
 }

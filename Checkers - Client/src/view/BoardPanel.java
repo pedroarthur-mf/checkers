@@ -22,11 +22,11 @@ public class BoardPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private /*@spec_public nullable@*/ Dimension panelSize = new Dimension(720,720);
-	private /*@spec_public nullable@*/ Board boardModel;
-	private /*@spec_public nullable@*/ MyMouseListener listener;
-	private /*@spec_public nullable@*/ LinkedList<SquarePanel> panels;
-	private /*@spec_public nullable@*/ Square[][] squares;
+	private /*@ spec_public @*/ Dimension panelSize = new Dimension(720,720);
+	private /*@ spec_public @*/ Board boardModel;
+	private /*@ spec_public @*/ MyMouseListener listener;
+	private /*@ spec_public @*/ LinkedList<SquarePanel> panels;
+	private /*@ spec_public @*/ Square[][] squares;
 
 	public BoardPanel(MyMouseListener listener){
 		setPreferredSize(panelSize);
@@ -42,6 +42,9 @@ public class BoardPanel extends JPanel {
 		System.out.println(boardModel.getTotlaSquares());		
 	}
 	
+	/*@ assignable panels;
+	  @ ensures \old(this.panels.size()) < this.panels.size();
+	 */
 	private void initializeSquarePanels() {
 		for(int i=0;i<8;i++){
 			for(int k=0;k<8;k++){
@@ -55,6 +58,7 @@ public class BoardPanel extends JPanel {
 		}
 	}
 	
+	//@ assignable panels;
 	public void repaintPanels(){
 		for(SquarePanel panel : panels){
 			panel.setListner(listener);	
@@ -62,7 +66,8 @@ public class BoardPanel extends JPanel {
 		
 		repaint();
 	}
-
+	
+	//@ requires s != null; 
 	public LinkedList<Square> getPlayableSquares(Square s){
 		return boardModel.findPlayableSquares(s);		
 	}

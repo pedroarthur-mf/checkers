@@ -23,17 +23,20 @@ public class Controller implements Runnable {
 	private /*@ spec_public nullable @*/ boolean isOver;
 	
 	//Network
-	private /*@ spec_public nullable @*/ DataInputStream fromServer;
-	private /*@ spec_public nullable @*/ DataOutputStream toServer;
+	private /*@ spec_public @*/ DataInputStream fromServer;
+	private /*@ spec_public @*/ DataOutputStream toServer;
 	
 	private /*@ spec_public nullable @*/ BoardPanel boardPanel;
-	private /*@ spec_public nullable @*/ Player player;
+	private /*@ spec_public @*/ Player player;
 	
 	//Data
 	private /*@ spec_public @*/ LinkedList<Square> selectedSquares;
 	private /*@ spec_public @*/ LinkedList<Square> playableSquares;
 	//private LinkedList<Square> crossableSquares;
 	
+	//@ public initially this.selectedSquares.size() == 0 && this.playableSquares.size() == 0;
+	
+	//@ assignable this.player, this.fromServer, this.toServer, this.selectedSquares, this.playableSquares;
 	public Controller(model.Player player, DataInputStream input, DataOutputStream output){
 		this.player = player;
 		this.fromServer = input;
@@ -43,7 +46,9 @@ public class Controller implements Runnable {
 		playableSquares = new LinkedList<Square>();
 	}
 	
-	//@ ensures this.boardPanel == panel;
+	/*@ assignable this.boardPanel;
+	  @ ensures this.boardPanel == panel;
+	  @*/
 	public void setBoardPanel(BoardPanel panel){
 		this.boardPanel = panel;
 	}
@@ -91,7 +96,18 @@ public class Controller implements Runnable {
 		}			
 	}
 	
-	private void receiveInfoFromServer() throws IOException {
+	/*@ public normal_behavior
+	  @		assignable this.isOver, this.continueToPlay, this.player;
+	  @		ensures this.isOver == true || this.isOver == false;
+	  @		ensures this.continueToPlay == true || this.continueToPlay == false; 
+	  @ also
+	  @ 	public exceptional_behavior
+	  @			requires this.fromServer == null;
+	  @			assignable this.isOver, this.continueToPlay, this.player;
+	  @			signals_only IOException;
+	  @				
+	  @*/
+	private /*@ spec_public @*/ void receiveInfoFromServer() throws IOException {
 		player.setMyTurn(false);
 		int from = fromServer.readInt();
 		if(from==Checkers.YOU_LOSE.getValue()){
@@ -107,12 +123,25 @@ public class Controller implements Runnable {
 			updateReceivedInfo(from, to);
 		}
 	}	
-
-	private void sendMove(Square from, Square to) throws IOException {
+	
+	/*@ public normal_behavior
+	  @		requires from != null && to != null; 
+	  @ 	assignable toServer;
+	  @ also
+	  @ 	public exceptional_behavior
+	  @			requires from == null || to == null;
+	  @			assignable toServer;
+	  @			signals_only IOException;
+	  @				
+	  @*/
+	private /*@ spec_public @*/ void sendMove(Square from, Square to) throws IOException {
 		toServer.writeInt(from.getSquareID());
 		toServer.writeInt(to.getSquareID());
 	}
-
+	
+	/*@ assignable this.waitingForAction;
+	  @ ensures this.waitingForAction == true;
+	  @*/
 	private void waitForPlayerAction() throws InterruptedException {
 		player.setMyTurn(true);
 		while(waitingForAction){
@@ -121,6 +150,10 @@ public class Controller implements Runnable {
 		waitingForAction = true;		
 	}
 	
+	/*@ requires from != null && to != null;
+	  @ assignable waitingForAction;
+	  @ ensures this.waitingForAction == false;
+	  @*/
 	public void move(Square from, Square to){
 		to.setPlayerID(from.getPlayerID());
 		from.setPlayerID(Checkers.EMPTY_SQUARE.getValue());
@@ -132,40 +165,41 @@ public class Controller implements Runnable {
 		try {
 			sendMove(from, to);
 		} catch (IOException e) {
-			System.out.println("Sending failed");
+			System.out.println("move(): Sending failed");
 		}		
 	}
 	
 	//When a square is selected
-	/*@ requires s != null;
-	  @*/
+	//@ requires s != null;
 	public void squareSelected(Square s) {
 		if(selectedSquares.isEmpty()){
-			System.out.println("selectedSquares is empty");
 			addToSelected(s);
 		}		
 		//if one is already selected, check if it is possible move
 		else if(selectedSquares.size()>=1){
-			System.out.println("selectedSquares is not empty");
 			if(playableSquares.contains(s)){
-				System.out.println("this is square is playable");
 				move(selectedSquares.getFirst(),s);
-				System.out.println("moved");
 			}else{
-				System.out.println("this is square is not playable");
 				squareDeselected();
 				addToSelected(s);
 			}
 		}
 	}
 	
-	// ENSURES THAT THE SIZE OF SELECTEDSQUARES GROW UP
+	/*@ requires s != null;
+	  @ assignable selectedSquares;
+	  @ ensures this.selectedSquares.size() == \old(this.selectedSquares.size()) + 1;
+	  @*/
 	private void addToSelected(Square s){
 		s.setSelected(true);
 		selectedSquares.add(s);
 		getPlayableSquares(s);
 	}
 
+	/*@ assignable this.selectedSquares, this.playableSquares;
+	  @ ensures this.selectedSquares.size() == 0;
+	  @ ensures this.playableSquares.size() == 0;
+	  @*/
 	public void squareDeselected() {
 		
 		for(Square square:selectedSquares)
@@ -181,7 +215,9 @@ public class Controller implements Runnable {
 		boardPanel.repaintPanels();
 	}
 	
-	
+	/*@ requires s != null;
+	  @	assignable this.selectedSquares;
+	  @*/
 	private void getPlayableSquares(Square s){
 		playableSquares.clear();		
 		playableSquares = boardPanel.getPlayableSquares(s);
@@ -192,10 +228,12 @@ public class Controller implements Runnable {
 		boardPanel.repaintPanels();
 	}
 	
+	//@ ensures \result == this.player.isMyTurn();
 	public boolean isHisTurn(){
 		return player.isMyTurn();
 	}
 	
+	//@ requires from != null && to != null;
 	private void checkCrossJump(Square from, Square to){		
 		if(Math.abs(from.getSquareRow()-to.getSquareRow())==2){		
 			int middleRow = (from.getSquareRow() + to.getSquareRow())/2;
@@ -207,6 +245,7 @@ public class Controller implements Runnable {
 		}
 	}
 	
+	//@ requires from != null && movedSquare != null;
 	private void checkKing(Square from, Square movedSquare){		
 		if(from.isKing()){
 			movedSquare.setKing();
@@ -218,6 +257,7 @@ public class Controller implements Runnable {
 		}
 	}
 	
+	//@ requires from >= 0 && to >= 0;
 	private void updateReceivedInfo(int from, int to){
 		Square fromSquare = boardPanel.getSquare(from);
 		Square toSquare = boardPanel.getSquare(to);

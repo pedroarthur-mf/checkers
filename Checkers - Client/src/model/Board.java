@@ -11,7 +11,13 @@ import enumConstants.Checkers;
  */
 public class Board {
 	
-	private /*@ spec_public nullable @*/ Square[][] squares;
+	private /*@ spec_public @*/ Square[][] squares;
+	
+	/*@
+	  @ public initially (\forall int i, j;
+	  @ 			0 <= i && i < 3 && 0 <= j && j < this.squares.length;
+	  @ 			this.squares[i][j] ==  null);
+	 @*/
 	
 	public Board(){
 		squares = new Square[8][8];
@@ -21,12 +27,17 @@ public class Board {
 		//printSquareDetails();
 	}
 	
+	
+	
 	/*@
 	 @ public invariant this.squares.length == 8;
 	 @ public invariant this.squares[1].length == 8;
+	 @ public invariant (\exists int i, j; i <= 0 && i < this.squares.length && j <= 0 && j < this.squares.length;
+	 @					 this.squares[i][j].isPossibleToMove() && (this.squares[i][j].getPlayerID() == Checkers.PLAYER_ONE.getValue() || this.squares[i][j].getPlayerID() == Checkers.PLAYER_TWO.getValue()));
 	 @*/
 	
 	 /*@
+	 @ assignable this.squares;
 	 @ ensures (\forall int i, j;
 	 @ 			0 <= i && i < squares.length && 0 <= j && j < squares.length && ((i%2 == 0 && j%2 == 1)||(i%2 == 1 && j%2 == 0));
 	 @ 			squares[i][j].getIsFilled() == true);
@@ -77,8 +88,10 @@ public class Board {
 	/*@
 	 @ requires (\forall int i, j;
 	 @			0 <= i && i < this.squares.length && 0 <= j && j < this.squares.length;
-	 @ 			this.squares[i][j].getPlayerID() == 0);//talvez n funcione
+	 @ 			this.squares[i][j].getPlayerID() == 0);
 	 @ 
+	 @ assignable this.squares;
+	 @
 	 @ ensures (\forall int i, j;
 	 @ 			0 <= i && i < 3 && 0 <= j && j < this.squares.length && this.squares[i][j].getIsFilled();
 	 @ 			this.squares[i][j].getPlayerID() == Checkers.PLAYER_ONE.getValue());
@@ -140,11 +153,11 @@ public class Board {
 	
 	//check two front squares
 	/*@
-	 @ requires movableRow >= 0 && movableRow <= squares.length;
+	 @ requires movableRow >= -2 && movableRow <= squares.length + 1;
 	 @ requires selectedCol >= 0 && selectedCol < squares.length;
+	 @ assignable pack;
 	 @ ensures pack.size() >= 0 && pack.size() <= 2;
-	 @ ensures (\forall int i; i >= 0 && i < pack.size(); pack.get(i) instanceof Square);
-	 @ ensures (\forall int i; i >= 0 && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove());
+	 @ ensures (\forall int i; pack.size() != \old(pack.size()) && i >= 0 && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove());
 	 @*/
 	private void twoFrontSquares(LinkedList<Square> pack, int movableRow, int selectedCol){
 		
@@ -171,12 +184,12 @@ public class Board {
 	
 	//cross jump - two front
 	/*@
-	 @ requires movableRow >= 0 && movableRow <= squares.length-1;
+	 @ requires movableRow >= -2 && movableRow <= squares.length + 1;
 	 @ requires selectedCol >= 0 && selectedCol < squares.length;
-	 @ requires middleRow >= 0 && middleRow < squares.length;
+	 @ requires middleRow >= -1 && middleRow <= squares.length;
+	 @ assignable pack;
 	 @ ensures pack.size() >= 0 && pack.size() <= 2;
-	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); pack.get(i) instanceof Square);
-	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove());
+	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove()) == true;
 	 @*/
 	private void crossJumpFront(LinkedList<Square> pack, int movableRow, int selectedCol, int middleRow){
 		

@@ -8,8 +8,8 @@ import java.util.Properties;
 
 public class PropertyManager {
 
-	private /*@spec_public nullable@*/ static PropertyManager INSTANCE = null;
-	private /*@spec_public nullable@*/ Properties prop;
+	private /*@ spec_public nullable @*/ static PropertyManager INSTANCE = null;
+	private /*@ spec_public @*/ Properties prop;
 	
 	private PropertyManager() throws IOException{
 		prop = new Properties();
@@ -26,6 +26,7 @@ public class PropertyManager {
 		}
 	}
 	
+	//@ ensures INSTANCE != null;
 	public static PropertyManager getInstance() throws IOException{
 		if(INSTANCE == null){
 			INSTANCE = new PropertyManager();
@@ -33,10 +34,12 @@ public class PropertyManager {
 		return INSTANCE;
 	}
 	
+	//@ ensures \result == prop.getProperty("server");
 	public String getAddress(){
 		return prop.getProperty("server");
 	}
 	
+	//@ ensures \result == Integer.parseInt(prop.getProperty("port"));
 	public int getPort(){
 		return Integer.parseInt(prop.getProperty("port"));
 	}

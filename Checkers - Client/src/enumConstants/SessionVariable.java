@@ -10,11 +10,15 @@ public enum SessionVariable{
 	SessionVariable(int value){
 		this.setValue(value);
 	}
-
+	
+	//@ ensures \result == this.value;
 	public int getValue() {
 		return value;
 	}
-
+	
+	/*@ assignable this.value;
+	  @ ensures this.value == value;
+	  @*/
 	public void setValue(int value) {
 		this.value = value;
 	}

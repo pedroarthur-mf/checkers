@@ -22,13 +22,14 @@ import view.BoardPanel;
  */
 public class ClientApp extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	private static final /*@ spec_public @*/ long serialVersionUID = 1L;
+	//@ public constraint serialVersionUID == \old(serialVersionUID);
 
 	private /*@ spec_public @*/ String address;
 	private /*@ spec_public @*/ int port;
 
 	// Model
-	private /*@ spec_public nullable @*/ Player player;
+	private /*@ spec_public @*/ Player player;
 
 	// View
 	private /*@ spec_public nullable @*/ BoardPanel boardPanel;
@@ -65,7 +66,8 @@ public class ClientApp extends JFrame {
 		}
 
 	}
-
+	
+	//@ assignable this.connection, this.fromServer, this.toServer, this.player;
 	private void connect() {
 
 		try {
@@ -93,6 +95,9 @@ public class ClientApp extends JFrame {
 		}
 	}
 	
+	/*@ requires c != null;
+	  @ assignable this.boardPanel;
+	  @*/
 	private void setup(Controller c) {
 		MyMouseListener listener = new MyMouseListener();
 		listener.setController(c);

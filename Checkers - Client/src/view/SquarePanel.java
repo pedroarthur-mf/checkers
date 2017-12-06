@@ -27,17 +27,18 @@ import model.Square;
  */
 public class SquarePanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	private static final /*@ spec_public @*/ long serialVersionUID = 1L;
+	//@ public constraint serialVersionUID == \old(serialVersionUID);
 
-	private /* @ spec_public nullable @ */ Square square;
-	private /* @ spec_public nullable @ */ Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED,
+	private /*@ spec_public @*/ Square square;
+	private /*@ spec_public @*/ Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED,
 			Color.black, Color.gray);
 	// private Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED,
 	// Color.white, Color.gray);
-	private /* @ spec_public nullable @ */ Border thickBorder = BorderFactory.createLineBorder(Colors.PURPLE.getColor(),
+	private /*@ spec_public @*/ Border thickBorder = BorderFactory.createLineBorder(Colors.PURPLE.getColor(),
 			5);
-	private /* @ spec_public nullable @ */ boolean focused;
-	private /* @ spec_public nullable @ */ MouseHandler handler;
+	private /*@ spec_public @*/ boolean focused;
+	private /*@ spec_public @*/ MouseHandler handler;
 
 	// Constructor
 	public SquarePanel(Square s) {
@@ -47,7 +48,10 @@ public class SquarePanel extends JPanel {
 
 		setListener();
 	}
-
+	
+	/*@ requires g != null;
+	  @ assignable \nothing;
+	  @*/
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		super.paintComponents(g2);
@@ -101,7 +105,9 @@ public class SquarePanel extends JPanel {
 			this.removeMouseListener(handler);
 		}
 	}
-
+	
+	
+	//@ requires MyListner != null;
 	public void setListner(MyMouseListener MyListner) {
 		setListener();
 		if (square.isPossibleToMove() || square.getPlayerID() == SessionVariable.myID.getValue()) {
@@ -113,25 +119,30 @@ public class SquarePanel extends JPanel {
 	}
 
 	// return Square
+	//@ ensures \result == this.square;
 	public Square getSquare() {
 		return this.square;
 	}
 
 	// return clicked
+	//@ ensures \result == this.square.isSelected();
 	public boolean isClicked() {
 		return this.square.isSelected();
 	}
 
 	// reset clicked to false
+	//@ ensures this.square.isSelected() == false;
 	public void resetClicked() {
 		this.square.setSelected(false);
 	}
 
 	// reset clicked to true
+	//@ ensures this.square.isSelected() == true;
 	public void setClicked() {
 		this.square.setSelected(true);
 	}
-
+	
+	//@ requires g2 != null;
 	private void paint(Graphics2D g2) {
 		int padding = 24;
 		g2.fillOval(padding / 2, padding / 2, getWidth() - padding, getHeight() - padding);

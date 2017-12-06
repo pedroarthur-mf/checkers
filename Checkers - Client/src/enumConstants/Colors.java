@@ -25,11 +25,25 @@ public enum Colors {
 		this.color = color;
 	}
 	
-	public Color getColor(){
+	//@ ensures \result == this.color;
+	public /*@ pure @*/ Color getColor(){
 		return this.color;
 	}
 	
-	public static Color getMyDefaultColor(int ID){
+	/*@ public normal_behavior
+	  @ requires ID == 1;
+	  @ ensures \result == RED.getColor();
+	  @ also
+	  @ 	public normal_behavior
+      @ 		requires ID == 2;
+	  @ 		ensures \result == ORANGE.getColor();
+	  @ also
+	  @ 	public normal_behavior
+      @ 		requires ID != 1 || ID != 2;
+	  @ 		ensures \result == null;
+	  @
+	  @*/
+	public static /*@ pure @*/ Color getMyDefaultColor(int ID){
 		if(ID==1){
 			return RED.getColor();
 		}
@@ -40,7 +54,21 @@ public enum Colors {
 		return null;
 	}
 	
-	public static Color getFocusedColor(int ID){
+	
+	/*@ public normal_behavior
+	  @ requires ID == 1;
+	  @ ensures \result == PURPLE.getColor();
+	  @ also
+	  @ 	public normal_behavior
+      @ 		requires ID == 2;
+	  @ 		ensures \result == YELLOW.getColor();
+	  @ also
+	  @ 	public normal_behavior
+      @ 		requires ID != 1 || ID != 2;
+	  @ 		ensures \result == null;
+	  @
+	  @*/
+	public /*@ pure @*/ static Color getFocusedColor(int ID){
 		if(ID==1){
 			return PURPLE.getColor();
 		}
