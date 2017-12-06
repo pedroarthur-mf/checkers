@@ -140,8 +140,8 @@ public class Board {
 	
 	//check two front squares
 	/*@
-	 @ requires movableRow >=0 && movableRow < squares.length;
-	 @ requires selectedCol >=0 && selectedCol < squares.length;
+	 @ requires movableRow >= 0 && movableRow <= squares.length;
+	 @ requires selectedCol >= 0 && selectedCol < squares.length;
 	 @ ensures pack.size() >= 0 && pack.size() <= 2;
 	 @ ensures (\forall int i; i >= 0 && i < pack.size(); pack.get(i) instanceof Square);
 	 @ ensures (\forall int i; i >= 0 && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove());
@@ -171,9 +171,9 @@ public class Board {
 	
 	//cross jump - two front
 	/*@
-	 @ requires movableRow >= 1&& movableRow < squares.length-1;
-	 @ requires selectedCol >=0 && selectedCol < squares.length;
-	 @ requires middleRow >=0 && middleRow < squares.length;
+	 @ requires movableRow >= 0 && movableRow <= squares.length-1;
+	 @ requires selectedCol >= 0 && selectedCol < squares.length;
+	 @ requires middleRow >= 0 && middleRow < squares.length;
 	 @ ensures pack.size() >= 0 && pack.size() <= 2;
 	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); pack.get(i) instanceof Square);
 	 @ ensures (\forall int i; i >= \old(pack.size()) && i < pack.size(); ((Square) pack.get(i)).isPossibleToMove());

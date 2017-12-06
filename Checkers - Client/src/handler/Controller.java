@@ -30,8 +30,8 @@ public class Controller implements Runnable {
 	private /*@ spec_public nullable @*/ Player player;
 	
 	//Data
-	private /*@ spec_public nullable @*/ LinkedList<Square> selectedSquares;
-	private /*@ spec_public nullable @*/ LinkedList<Square> playableSquares;
+	private /*@ spec_public @*/ LinkedList<Square> selectedSquares;
+	private /*@ spec_public @*/ LinkedList<Square> playableSquares;
 	//private LinkedList<Square> crossableSquares;
 	
 	public Controller(model.Player player, DataInputStream input, DataOutputStream output){
@@ -137,28 +137,29 @@ public class Controller implements Runnable {
 	}
 	
 	//When a square is selected
-	/*@ requires selectedSquares != null; 
-	  @ requires s != null;
-	 */
+	/*@ requires s != null;
+	  @*/
 	public void squareSelected(Square s) {
-		
 		if(selectedSquares.isEmpty()){
+			System.out.println("selectedSquares is empty");
 			addToSelected(s);
 		}		
 		//if one is already selected, check if it is possible move
 		else if(selectedSquares.size()>=1){
+			System.out.println("selectedSquares is not empty");
 			if(playableSquares.contains(s)){
+				System.out.println("this is square is playable");
 				move(selectedSquares.getFirst(),s);
+				System.out.println("moved");
 			}else{
+				System.out.println("this is square is not playable");
 				squareDeselected();
 				addToSelected(s);
 			}
 		}
 	}
 	
-	/*@ requires s != null;
-	  @ ensures \old(selectedSquares.size()) < selectedSquares.size();
-	 */
+	// ENSURES THAT THE SIZE OF SELECTEDSQUARES GROW UP
 	private void addToSelected(Square s){
 		s.setSelected(true);
 		selectedSquares.add(s);

@@ -102,8 +102,7 @@ public class Square {
 		this.isKing = true;
 	}
 	
-	/*@ requires this.isKing == true;
-	  @ ensures this.isKing == false;
+	/*@ ensures this.isKing == false;
 	  @*/
 	public void removeKing(){
 		this.isKing = false;

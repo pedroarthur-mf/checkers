@@ -39,22 +39,25 @@ public class MyMouseListener extends MouseAdapter{
 	}
 	
 	private void ToggleSelectPiece(MouseEvent e){
+		System.out.println("ToggleSelectPiece");
 		try{
 			squarePanel = (SquarePanel) e.getSource();
 			Square s = squarePanel.getSquare();
 			
 			//if square is already selected - deselect
 			if(s.isSelected()){
+				System.out.println("Square is already selected");
 				System.out.println("deselect - "+s.getSquareID());
 				controller.squareDeselected();				
 			}
 			//else select
 			else{
+				System.out.println("Is not selected");
 				System.out.println("select - "+s.getSquareID());
 				controller.squareSelected(s);
 			}
 		}catch(Exception ex){
-			System.out.println("error");
+			System.out.println("ToggleSelectPiece: error");
 		}
 	}
 }
